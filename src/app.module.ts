@@ -1,20 +1,17 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MoviesModule } from './app/movies/movies.module';
+import { config } from 'dotenv'
 
+config()
 @Module({
   imports: [
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get('DATABASE_URL'),
-        ssl: configService.get('NODE_ENV') === "production" ? {rejectUnauthorized: false} : false ,
-        entities: [__dirname + '/**/*.entity{.js,.ts}'],
-        synchronize: false,
-      }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      url: process.env.DATABASE_URL,
+      ssl: process.env.NODE_ENV === "production" ? {rejectUnauthorized: false} : false ,
+      entities: [__dirname + '/**/*.entity{.js,.ts}'],
+      synchronize: false,   
   }), MoviesModule],
   controllers: [],
   providers: [],
