@@ -11,7 +11,7 @@ config()
       url: process.env.DATABASE_URL,
       ssl: process.env.NODE_ENV === "production" ? {rejectUnauthorized: false} : false ,
       entities: [__dirname + '/**/*.entity{.js,.ts}'],
-      synchronize: false,   
+      synchronize: true,   
   }), MoviesModule],
   controllers: [],
   providers: [],
